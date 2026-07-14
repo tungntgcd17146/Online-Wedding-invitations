@@ -1,0 +1,222 @@
+@font-face {
+  font-family: "Lora";
+  src: url('/fonts/lora-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ergisa";
+  src: url('/fonts/ergisa-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "High Spirited";
+  src: url('/fonts/high-spirited.otf') format('opentype');
+}
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: rgb(146, 131, 98);
+  --color-primary-dark: rgb(116, 102, 73);
+  --color-gold-accent: #b89c65;
+  --font-cursive: 'High Spirited', cursive;
+  --font-serif-elegant: 'Ergisa', serif;
+  --font-body: 'Lora', serif;
+  
+  --animate-pulse-slow: pulse-slow 3s infinite;
+  --animate-float: float 4s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.95; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+:root {
+  --background: #333333;
+  --foreground: #2d261e;
+  --primary-rgb: 146, 131, 98;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Lora', serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile-centric wrapper setup */
+.card-wrapper {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  background-color: #fff8ed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Section styling with background images from live site templates */
+.card-section {
+  position: relative;
+  padding: 50px 24px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#card-countdown {
+  background-image: url(https://cocohappii.com/templates/005/images/bg-1.jpg);
+  background-size: 100% auto;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-color: #fff8ed;
+}
+
+#card-info {
+  background-image: url(https://cocohappii.com/templates/005/images/bg-2.jpg);
+}
+
+#card-love-story {
+  background-image: url(https://cocohappii.com/templates/005/images/bg-3.jpg);
+}
+
+#card-gallery {
+  background-image: url(https://cocohappii.com/templates/005/images/bg-4.jpg);
+}
+
+#card-calendar {
+  background-image: url(https://cocohappii.com/templates/005/images/bg-5.jpg);
+}
+
+#card-comments {
+  background-image: url(https://cocohappii.com/templates/005/images/bg-7.jpg);
+}
+
+/* Audio floating button animation spinning */
+.audio-spin {
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Text style overrides to match high fidelity */
+.font-cursive {
+  font-family: 'High Spirited', cursive;
+}
+
+.font-serif-elegant {
+  font-family: 'Ergisa', serif;
+}
+
+.font-body {
+  font-family: 'Lora', serif;
+}
+
+/* Envelope Photo layout and spacing overrides */
+#envelop-photo {
+  position: relative;
+  width: 90%;
+  max-width: 340px;
+  aspect-ratio: 340 / 230;
+  margin: 0 auto;
+}
+
+#envelop-photo img.back {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+#envelop-photo img.front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+#envelop-photo .pt1, #envelop-photo .pt2 {
+  position: absolute;
+  width: 36%;
+  aspect-ratio: 3/4;
+  border: 3px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  background-size: cover;
+  background-position: center;
+  bottom: 8%;
+  border-radius: 2px;
+}
+
+#envelop-photo .pt1 {
+  left: 14%;
+  z-index: 2;
+}
+
+#envelop-photo .pt2 {
+  right: 14%;
+  z-index: 3;
+}
+
+/* Hiệu ứng mở cánh phong bì trượt ra 2 bên bằng CSS thuần cho Mobile */
+.card-side-animate-left {
+  animation: slideOutLeft 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  animation-delay: 1000ms !important;
+  transform: translate3d(0%, 0px, 0px);
+  -webkit-transform: translate3d(0%, 0px, 0px);
+}
+
+.card-side-animate-right {
+  animation: slideOutRight 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  animation-delay: 1000ms !important;
+  transform: translate3d(0%, 0px, 0px);
+  -webkit-transform: translate3d(0%, 0px, 0px);
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translate3d(0%, 0px, 0px);
+    -webkit-transform: translate3d(0%, 0px, 0px);
+  }
+  to {
+    transform: translate3d(-100%, 0px, 0px);
+    -webkit-transform: translate3d(-100%, 0px, 0px);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translate3d(0%, 0px, 0px);
+    -webkit-transform: translate3d(0%, 0px, 0px);
+  }
+  to {
+    transform: translate3d(100%, 0px, 0px);
+    -webkit-transform: translate3d(100%, 0px, 0px);
+  }
+}
+
