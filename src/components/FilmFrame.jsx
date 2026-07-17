@@ -4,7 +4,8 @@ export default function FilmFrame() {
   const photos = [
     '/wedding_photos/BUM_8345.webp',
     '/wedding_photos/BUM_8496.webp',
-    '/wedding_photos/BUM_8838.webp',
+    '/wedding_photos/BUM_8153.webp',
+    '/wedding_photos/BUM_8435.webp',
   ];
 
   return (

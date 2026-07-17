@@ -1,12 +1,18 @@
 'use client';
 
-export default function MiniCalendar() {
+export default function MiniCalendar({ 
+  highlightDay = 8, 
+  month = 'August', 
+  year = '2026', 
+  blanksCount = 5, 
+  daysCount = 31 
+}) {
   // Tiêu đề các ngày trong tuần (Thứ Hai đến Chủ Nhật) theo mẫu Cocohappii
   const daysOfWeek = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
   
-  // Tháng 11 năm 2025: Ngày 1 rơi vào thứ Bảy (cần 5 ô trống phía trước nếu bắt đầu từ Thứ Hai)
-  const blanks = Array(5).fill(null);
-  const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1);
+  // Ngày 1 rơi vào thứ Bảy (cần blanksCount ô trống phía trước nếu bắt đầu từ Thứ Hai)
+  const blanks = Array(blanksCount).fill(null);
+  const daysInMonth = Array.from({ length: daysCount }, (_, i) => i + 1);
   const allDays = [...blanks, ...daysInMonth];
 
   return (
@@ -14,10 +20,10 @@ export default function MiniCalendar() {
       {/* Tiêu đề Tháng & Năm chồng đè nghệ thuật */}
       <div className="relative flex flex-col items-center justify-center h-20 mb-6">
         <span className="text-[#928362]/20 font-serif-elegant text-7xl font-semibold tracking-wider leading-none">
-          2025
+          {year}
         </span>
         <h3 className="font-cursive text-[#928362] text-4xl absolute bottom-1.5 opacity-90 select-none">
-          November
+          {month}
         </h3>
       </div>
 
@@ -35,7 +41,7 @@ export default function MiniCalendar() {
             return <div key={`blank-${idx}`} />;
           }
 
-          const isWeddingDay = day === 7;
+          const isWeddingDay = day === highlightDay;
 
           return (
             <div 
@@ -44,7 +50,7 @@ export default function MiniCalendar() {
             >
               {isWeddingDay ? (
                 <div className="relative flex items-center justify-center w-9 h-9">
-                  {/* Trái tim viền màu vàng đất bao quanh số 7 */}
+                  {/* Trái tim viền màu vàng đất bao quanh số ngày */}
                   <svg 
                     className="absolute w-9 h-9 text-[#928362]/85 animate-pulse" 
                     fill="none" 

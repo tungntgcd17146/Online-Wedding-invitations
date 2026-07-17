@@ -3,13 +3,13 @@ import { X, Copy, Check } from 'lucide-react';
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-function GiftModalContent({ isOpen, onClose }) {
+function GiftModalContent({ isOpen, onClose, bankInfo }) {
   const [copied, setCopied] = useState(false);
   const searchParams = useSearchParams();
 
   if (!isOpen) return null;
 
-  // Quyết định hiển thị Chú rể hay Cô dâu dựa trên các tham số query thông dụng
+  // Quyết định hiển thị Chú rể hay Cô dâu dựa trên các tham số query thông dụng (nếu có)
   const sideParam = (
     searchParams.get('side') || 
     searchParams.get('from') || 
@@ -17,29 +17,47 @@ function GiftModalContent({ isOpen, onClose }) {
     ''
   ).toLowerCase();
 
-  const isBride = 
-    sideParam.includes('nu') || 
-    sideParam.includes('bride') || 
-    sideParam.includes('codau') || 
-    sideParam.includes('gai');
+  let accountInfo = bankInfo;
 
-  const activeSide = isBride ? 'bride' : 'groom';
+  if (sideParam) {
+    const isBride = 
+      sideParam.includes('nu') || 
+      sideParam.includes('bride') || 
+      sideParam.includes('codau') || 
+      sideParam.includes('gai');
 
-  const accountInfo = activeSide === 'groom' ? {
-    roleName: 'chú rể',
-    fullName: 'Thanh Tùng',
-    bankName: 'TPBank',
-    accountNumber: '02138194101',
-    ownerName: 'NGUYỄN THANH TÙNG',
-    qrSrc: '/wedding_photos/QRchure_cropped.webp'
-  } : {
-    roleName: 'cô dâu',
-    fullName: 'Ánh Nguyệt',
-    bankName: 'TPBank',
-    accountNumber: '10000516918',
-    ownerName: 'PHẠM THỊ ÁNH NGUYỆT',
-    qrSrc: '/wedding_photos/QRcodau_cropped.webp'
-  };
+    const fallbackGroom = {
+      roleName: 'chú rể',
+      fullName: 'Thanh Tùng',
+      bankName: 'TPBank',
+      accountNumber: '02138194101',
+      ownerName: 'NGUYỄN THANH TÙNG',
+      qrSrc: '/wedding_photos/QRchure_cropped.webp'
+    };
+
+    const fallbackBride = {
+      roleName: 'cô dâu',
+      fullName: 'Ánh Nguyệt',
+      bankName: 'TPBank',
+      accountNumber: '10000516918',
+      ownerName: 'PHẠM THỊ ÁNH NGUYỆT',
+      qrSrc: '/wedding_photos/QRcodau_cropped.webp'
+    };
+
+    accountInfo = isBride ? fallbackBride : fallbackGroom;
+  }
+
+  // Fallback mặc định nếu không truyền prop và không có query params
+  if (!accountInfo) {
+    accountInfo = {
+      roleName: 'chú rể',
+      fullName: 'Thanh Tùng',
+      bankName: 'TPBank',
+      accountNumber: '02138194101',
+      ownerName: 'NGUYỄN THANH TÙNG',
+      qrSrc: '/wedding_photos/QRchure_cropped.webp'
+    };
+  }
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -73,7 +91,7 @@ function GiftModalContent({ isOpen, onClose }) {
                 className="max-h-full max-w-full rounded-sm"
               />
             </div>
-            <div className="bg-white/80 p-4 rounded-xl border border-[#928362]/10 text-sm space-y-1.5 font-semibold text-zinc-700 text-left max-w-[260px] mx-auto">
+            <div className="bg-white/80 p-4 rounded-xl border border-[#928362]/10 text-[13px] min-[360px]:text-sm space-y-1.5 font-semibold text-zinc-700 text-left max-w-[310px] mx-auto">
               <div>Ngân hàng: <span className="text-zinc-950 font-bold">{accountInfo.bankName}</span></div>
               <div>Số tài khoản: <span className="text-zinc-950 font-bold">{accountInfo.accountNumber}</span></div>
               <div>Chủ tài khoản: <span className="text-zinc-950 font-bold">{accountInfo.ownerName}</span></div>
@@ -94,11 +112,11 @@ function GiftModalContent({ isOpen, onClose }) {
   );
 }
 
-export default function GiftModal({ isOpen, onClose }) {
+export default function GiftModal({ isOpen, onClose, bankInfo }) {
   if (!isOpen) return null;
   return (
     <Suspense fallback={null}>
-      <GiftModalContent isOpen={isOpen} onClose={onClose} />
+      <GiftModalContent isOpen={isOpen} onClose={onClose} bankInfo={bankInfo} />
     </Suspense>
   );
 }

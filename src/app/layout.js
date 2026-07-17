@@ -1,17 +1,17 @@
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://anhnguyet-thanhtung.vercel.app"),
+  metadataBase: new URL("https://online-wedding-invitations.vercel.app"),
   title: "Thư mời cưới Thanh Tùng ♥ Ánh Nguyệt",
   description: "Thiệp cưới online của Thanh Tùng & Ánh Nguyệt nơi gửi gắm lời mời trân trọng và câu chuyện tình yêu đong đầy ý nghĩa.",
   openGraph: {
     title: "Thư mời cưới Thanh Tùng ♥ Ánh Nguyệt",
     description: "Thiệp cưới online của Thanh Tùng & Ánh Nguyệt nơi gửi gắm lời mời trân trọng và câu chuyện tình yêu đong đầy ý nghĩa.",
-    url: "https://anhnguyet-thanhtung.vercel.app",
+    url: "https://online-wedding-invitations.vercel.app",
     siteName: "Cocohappii Inspired Invitation",
     images: [
       {
-        url: "/wedding_photos/BUM_8162.webp",
+        url: "/wedding_photos/BUM_8335.webp",
         width: 1200,
         height: 630,
         alt: "Thư mời cưới Thanh Tùng ♥ Ánh Nguyệt",

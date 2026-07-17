@@ -9,16 +9,41 @@ import FilmFrame from '@/components/FilmFrame';
 import Gallery from '@/components/Gallery';
 import MiniCalendar from '@/components/MiniCalendar';
 import GiftModal from '@/components/GiftModal';
+import RSVPModal from '@/components/RSVPModal';
 import Guestbook from '@/components/Guestbook';
 import PersonalizedGreeting from '@/components/PersonalizedGreeting';
-import { MapPin, Gift, Camera } from 'lucide-react';
+import { MapPin, Gift, Camera, CalendarRange } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { weddingData } from '@/data/weddingData';
+import { useSearchParams } from 'next/navigation';
 
-export default function Home() {
+export function HomeContent({ forceSide }) {
+  const searchParams = useSearchParams();
   const [isEnvelopeOpened, setIsEnvelopeOpened] = useState(false);
   const [isPopupClosed, setIsPopupClosed] = useState(false);
   const [musicPlayTrigger, setMusicPlayTrigger] = useState(false);
   const [isGiftOpen, setIsGiftOpen] = useState(false);
+  const [isRSVPOpen, setIsRSVPOpen] = useState(false);
+
+  // Xác định hiển thị thông tin Nhà Trai hay Nhà Gái
+  const sideParam = (
+    forceSide ||
+    searchParams.get('side') ||
+    searchParams.get('from') ||
+    searchParams.get('role') ||
+    ''
+  ).toLowerCase();
+
+  const isBrideSide =
+    sideParam.includes('nu') ||
+    sideParam.includes('bride') ||
+    sideParam.includes('codau') ||
+    sideParam.includes('gai') ||
+    sideParam.includes('nhanu') ||
+    sideParam.includes('nhagai');
+
+  const activeSide = isBrideSide ? 'nhanu' : 'nhanam';
+  const data = weddingData[activeSide];
 
   const handlePopupClose = () => {
     setIsPopupClosed(true);
@@ -33,7 +58,7 @@ export default function Home() {
       {/* Bước 2: Popup thư mời cá nhân hóa chỉ hiện sau khi phong bì mở ra */}
       {isEnvelopeOpened && !isPopupClosed && (
         <Suspense fallback={null}>
-          <GuestPopup onClose={handlePopupClose} />
+          <GuestPopup onClose={handlePopupClose} date={data.bannerDate} />
         </Suspense>
       )}
 
@@ -68,7 +93,7 @@ export default function Home() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="wedding-name font-serif-elegant text-white text-[21px] font-medium tracking-[0.15em] uppercase drop-shadow-md"
+              className="wedding-name font-serif-elegant text-white text-[16px] min-[360px]:text-[18px] min-[390px]:text-[21px] font-medium tracking-[0.08em] min-[360px]:tracking-[0.12em] min-[390px]:tracking-[0.15em] uppercase drop-shadow-md whitespace-nowrap select-none"
             >
               Thanh Tùng & Ánh Nguyệt
             </motion.div>
@@ -78,7 +103,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.5 }}
               className="wedding-date font-serif-elegant text-white text-sm tracking-[0.2em] font-medium drop-shadow-md"
             >
-              07.11.2025
+              {data.bannerDate}
             </motion.div>
           </div>
         </section>
@@ -97,7 +122,7 @@ export default function Home() {
           </div>
           
           {/* Đếm ngược dạng chữ số thanh mảnh */}
-          <Countdown targetDate="2026-08-02T11:00:00" />
+          <Countdown targetDate={data.countdownTarget} />
 
           {/* Phong bì ảnh cưới trồi lên */}
           <EnvelopePhoto />
@@ -135,17 +160,17 @@ export default function Home() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true, margin: "-20px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="grid grid-cols-2 gap-4 text-center text-sm text-zinc-700 font-semibold border-b border-[#928362]/10 pb-8"
+            className="grid grid-cols-2 gap-2 text-center text-xs min-[360px]:text-[13px] min-[400px]:text-sm text-zinc-700 font-semibold border-b border-[#928362]/10 pb-8"
           >
-            <div className="space-y-1.5 border-r border-[#928362]/10 pr-2">
-              <span className="text-[#796745] font-serif-elegant font-bold text-lg block uppercase tracking-widest mb-1.5">Nhà Trai</span>
-              <p>Ông: <span className="font-bold text-zinc-800">Nguyễn Văn Toàn</span></p>
-              <p>Bà: <span className="font-bold text-zinc-800">Nguyễn Thị Bích Liên</span></p>
+            <div className="space-y-1.5 border-r border-[#928362]/10 pr-1 select-none whitespace-nowrap">
+              <span className="text-[#796745] font-serif-elegant font-bold text-[15px] min-[360px]:text-base min-[400px]:text-lg block uppercase tracking-wider mb-1.5">Nhà Trai</span>
+              <p>Ông: <span className="font-bold text-zinc-900">Nguyễn Văn Toàn</span></p>
+              <p>Bà: <span className="font-bold text-zinc-900">Nguyễn Thị Bích Liên</span></p>
             </div>
-            <div className="space-y-1.5 pl-2">
-              <span className="text-[#796745] font-serif-elegant font-bold text-lg block uppercase tracking-widest mb-1.5">Nhà Gái</span>
-              <p>Ông: <span className="font-bold text-zinc-800">Phạm Đình Triêu</span></p>
-              <p>Bà: <span className="font-bold text-zinc-800">Dương Phương Nga</span></p>
+            <div className="space-y-1.5 pl-1 select-none whitespace-nowrap">
+              <span className="text-[#796745] font-serif-elegant font-bold text-[15px] min-[360px]:text-base min-[400px]:text-lg block uppercase tracking-wider mb-1.5">Nhà Gái</span>
+              <p>Ông: <span className="font-bold text-zinc-900">Phạm Đình Triêu</span></p>
+              <p>Bà: <span className="font-bold text-zinc-900">Dương Phương Nga</span></p>
             </div>
           </motion.div>
 
@@ -214,20 +239,20 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="space-y-3"
             >
-              <span className="text-sm font-bold uppercase tracking-[0.2em] block">Được tổ chức vào lúc</span>
+              <span className="text-sm font-bold uppercase tracking-[0.2em] block text-[#796745]/80">Được tổ chức vào lúc</span>
               
               {/* Dòng phân cách ngang thanh lịch */}
               <div className="border-y border-[#928362]/20 py-4 max-w-[240px] mx-auto space-y-1">
-                <div className="text-2xl font-serif-elegant font-bold uppercase tracking-widest">
-                  11:00 - Thứ Sáu
+                <div className="text-2xl font-serif-elegant font-black uppercase tracking-widest text-[#4a3319]">
+                  {data.timeLabel}
                 </div>
-                <div className="text-3xl font-serif-elegant font-bold tracking-widest">
-                  07.11.2025
+                <div className="text-3xl font-serif-elegant font-black tracking-widest text-[#4a3319]">
+                  {data.dateLabel}
                 </div>
               </div>
 
-              <p className="text-sm font-medium italic">
-                (Tức ngày 18 tháng 9 năm Ất Tỵ)
+              <p className="text-xs min-[360px]:text-sm font-medium italic text-[#796745]/90">
+                {data.lunarDateLabel}
               </p>
             </motion.div>
 
@@ -238,12 +263,12 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="space-y-2 pt-4"
             >
-              <span className="text-xs font-bold uppercase tracking-widest block">Địa Điểm:</span>
-              <h4 className="text-xl font-serif-elegant font-bold uppercase tracking-wide">
-                Hội Trường Peony- Tầng 3
+              <span className="text-xs font-bold uppercase tracking-widest block text-[#796745]/80">Địa Điểm:</span>
+              <h4 className="text-xl font-serif-elegant font-black uppercase tracking-wide text-[#4a3319]">
+                {data.venueName}
               </h4>
-              <p className="text-[15px] leading-relaxed font-semibold max-w-[320px] mx-auto opacity-90">
-                Promes Center: 122 Xuân Thuỷ, Dịch Vọng Hậu, Cầu Giấy, Hà Nội
+              <p className="text-[14px] min-[360px]:text-[15px] leading-relaxed font-bold max-w-[320px] mx-auto text-zinc-800">
+                {data.venueAddress}
               </p>
             </motion.div>
 
@@ -265,7 +290,7 @@ export default function Home() {
                 }
               `}</style>
               <a 
-                href="https://maps.app.goo.gl/nn2Gjf9W5Y3DDk6f7" 
+                href={data.mapLink} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="bounce-soft-btn flex items-center justify-center text-[#796745] hover:text-[#5a4a30] text-[14px] font-bold transition duration-300 tracking-[0.25em] space-x-2 w-fit mx-auto"
@@ -280,10 +305,10 @@ export default function Home() {
         {/* SECTION 5: CÔ DÂU & CHÚ RỂ (BỐ CỤC POLAROID LỆCH CHÉO BẢN GỐC) */}
         <section id="card-love-story" className="card-section border-b border-[#928362]/10 space-y-10">
           <div className="text-center font-serif-elegant">
-            <h3 className="text-3xl font-extrabold text-[#5b432b] tracking-[0.15em] flex items-center justify-center space-x-2 select-none">
-              <span>THE STORY</span>
-              <span className="font-cursive text-5xl font-normal -mt-2.5 opacity-90 lowercase text-[#796745]">of</span>
-              <span>LOVE</span>
+            <h3 className="text-2xl min-[400px]:text-3xl font-extrabold text-[#5b432b] tracking-[0.12em] flex items-center justify-center space-x-1.5 select-none">
+              <span className="whitespace-nowrap">THE STORY</span>
+              <span className="font-cursive text-4xl min-[400px]:text-5xl font-normal -mt-2.5 opacity-90 lowercase text-[#796745]">of</span>
+              <span className="whitespace-nowrap">LOVE</span>
             </h3>
           </div>
 
@@ -301,8 +326,8 @@ export default function Home() {
               </div>
               {/* Tên chú rể đặt bên phải ảnh */}
               <div className="absolute left-[105%] top-[36%] w-[130px] space-y-1 text-left font-serif-elegant whitespace-nowrap z-20">
-                <span className="font-cursive text-[#5b432b] text-4xl font-bold block leading-none">Chú rể</span>
-                <h4 className="text-[18px] font-black text-[#5b432b] tracking-wider uppercase">THANH TÙNG</h4>
+                <span className="font-cursive text-[#928362] text-4xl font-bold block leading-none">Chú rể</span>
+                <h4 className="text-[18px] font-black text-black tracking-wider uppercase">THANH TÙNG</h4>
               </div>
             </div>
 
@@ -310,8 +335,8 @@ export default function Home() {
             <div className="absolute right-2 bottom-2 w-[55%] z-20 origin-bottom-right transition-transform duration-300 hover:rotate-0">
               {/* Tên cô dâu đặt bên trái ảnh */}
               <div className="absolute right-[105%] top-[36%] w-[130px] space-y-1 text-right font-serif-elegant whitespace-nowrap z-20">
-                <span className="font-cursive text-[#5b432b] text-4xl font-bold block leading-none">Cô dâu</span>
-                <h4 className="text-[18px] font-black text-[#5b432b] tracking-wider uppercase">ÁNH NGUYỆT</h4>
+                <span className="font-cursive text-[#928362] text-4xl font-bold block leading-none">Cô dâu</span>
+                <h4 className="text-[18px] font-black text-black tracking-wider uppercase">ÁNH NGUYỆT</h4>
               </div>
               <div className="bg-white p-2.5 pb-7 shadow-lg border border-zinc-200 rotate-[6deg] rounded-xs">
                 <div className="aspect-[3/4] overflow-hidden bg-zinc-100">
@@ -335,7 +360,7 @@ export default function Home() {
           <div className="relative h-[280px] w-full max-w-[360px] mx-auto mt-10 mb-8">
             
             {/* Tiêu đề bên trái */}
-            <div className="absolute left-2 top-[35%] font-serif-elegant text-left space-y-0.5 z-10">
+            <div className="absolute left-2 top-[35%] font-serif-elegant text-left space-y-0.5 z-40">
               <span className="font-cursive text-3xl text-[#928362] block italic leading-none">The</span>
               <h3 className="text-2xl font-bold text-[#928362] tracking-wider uppercase">ALBUM</h3>
             </div>
@@ -345,7 +370,7 @@ export default function Home() {
               <div className="bg-white p-2 pb-5 shadow-md border border-zinc-200/50 -rotate-[6deg] rounded-xs">
                 <div className="aspect-[3/4] bg-zinc-100 overflow-hidden">
                   <img 
-                    src="/wedding_photos/BUM_8357.webp" 
+                    src="/wedding_photos/BUM_8782.webp" 
                     alt="Album Cover 1" 
                     className="w-full h-full object-cover"
                   />
@@ -367,7 +392,7 @@ export default function Home() {
             </div>
 
             {/* Tiêu đề bên phải dưới */}
-            <div className="absolute right-4 bottom-[20%] font-serif-elegant text-right space-y-0.5 z-10">
+            <div className="absolute right-2 bottom-2 font-serif-elegant text-right space-y-0.5 z-40">
               <span className="text-[10px] font-bold text-[#928362] tracking-[0.25em] block leading-none">OF</span>
               <h3 className="text-xl font-bold text-[#928362] tracking-widest uppercase">LOVE</h3>
             </div>
@@ -385,7 +410,7 @@ export default function Home() {
             <div className="bg-white p-1.5 pb-4 shadow-xs border border-zinc-200/40 rounded-xs">
               <div className="aspect-[3/4] overflow-hidden bg-zinc-100">
                 <img 
-                  src="/wedding_photos/BUM_8260.webp" 
+                  src="/wedding_photos/BUM_8589.webp" 
                   alt="Calendar Side 1" 
                   className="w-full h-full object-cover"
                 />
@@ -394,7 +419,7 @@ export default function Home() {
             <div className="bg-white p-1.5 pb-4 shadow-xs border border-zinc-200/40 rounded-xs">
               <div className="aspect-[3/4] overflow-hidden bg-zinc-100">
                 <img 
-                  src="/wedding_photos/BUM_8782.webp" 
+                  src="/wedding_photos/BUM_8369.webp" 
                   alt="Calendar Side 2" 
                   className="w-full h-full object-cover"
                 />
@@ -403,7 +428,13 @@ export default function Home() {
           </div>
 
           {/* Lịch âm dương tháng cưới */}
-          <MiniCalendar />
+          <MiniCalendar 
+            highlightDay={data.calendarHighlightDay} 
+            month={data.calendarMonth} 
+            year={data.calendarYear} 
+            blanksCount={data.calendarBlanksCount} 
+            daysCount={data.calendarDaysCount} 
+          />
         </section>
 
         {/* SECTION 8: DÒNG THỜI GIAN NGANG (HORIZONTAL TIMELINE) */}
@@ -426,56 +457,28 @@ export default function Home() {
               {/* Đường chỉ trắng nằm ngang nối các chấm tròn */}
               <div className="absolute left-[12%] right-[12%] top-[58px] h-[1.5px] bg-white/50 z-0" />
               
-              {/* Mốc 1 */}
-              <div className="relative flex flex-col items-center text-center w-1/4 z-10">
-                {/* Icon nổi phía trên đường line */}
-                <div className="h-12 flex items-center justify-center mb-1">
-                  <img src="https://cocohappii.com/templates/005/images/icon-tl1.png" className="w-9 h-9 object-contain" alt="camera" />
-                </div>
-                {/* Chấm tròn trắng nằm ngay trên đường line */}
-                <div className="w-3 h-3 rounded-full bg-white border border-white/60 shadow-xs z-20 my-1" />
-                {/* Giờ & Nội dung phía dưới */}
-                <div className="text-white font-serif-elegant font-bold text-sm tracking-wider mt-1.5">11:00</div>
-                <div className="text-[9px] font-semibold text-white/95 leading-relaxed uppercase mt-1 tracking-wider px-0.5">
-                  ĐÓN KHÁCH, CHỤP<br />ẢNH CÙNG CDCR
-                </div>
-              </div>
-              
-              {/* Mốc 2 */}
-              <div className="relative flex flex-col items-center text-center w-1/4 z-10">
-                <div className="h-12 flex items-center justify-center mb-1">
-                  <img src="https://cocohappii.com/templates/005/images/icon-tl2.png" className="w-9 h-9 object-contain" alt="rings" />
-                </div>
-                <div className="w-3 h-3 rounded-full bg-white border border-white/60 shadow-xs z-20 my-1" />
-                <div className="text-white font-serif-elegant font-bold text-sm tracking-wider mt-1.5">11:30</div>
-                <div className="text-[9px] font-semibold text-white/95 leading-relaxed uppercase mt-1 tracking-wider px-0.5">
-                  NGHI LỄ CƯỚI
-                </div>
-              </div>
-              
-              {/* Mốc 3 */}
-              <div className="relative flex flex-col items-center text-center w-1/4 z-10">
-                <div className="h-12 flex items-center justify-center mb-1">
-                  <img src="https://cocohappii.com/templates/005/images/icon-tl3.png" className="w-9 h-9 object-contain" alt="dining" />
-                </div>
-                <div className="w-3 h-3 rounded-full bg-white border border-white/60 shadow-xs z-20 my-1" />
-                <div className="text-white font-serif-elegant font-bold text-sm tracking-wider mt-1.5">11:40</div>
-                <div className="text-[9px] font-semibold text-white/95 leading-relaxed uppercase mt-1 tracking-wider px-0.5">
-                  KHAI TIỆC
-                </div>
-              </div>
-              
-              {/* Mốc 4 */}
-              <div className="relative flex flex-col items-center text-center w-1/4 z-10">
-                <div className="h-12 flex items-center justify-center mb-1">
-                  <img src="https://cocohappii.com/templates/005/images/icon-tl1.png" className="w-9 h-9 object-contain" alt="camera" />
-                </div>
-                <div className="w-3 h-3 rounded-full bg-white border border-white/60 shadow-xs z-20 my-1" />
-                <div className="text-white font-serif-elegant font-bold text-sm tracking-wider mt-1.5">12:30</div>
-                <div className="text-[9px] font-semibold text-white/95 leading-relaxed uppercase mt-1 tracking-wider px-0.5">
-                  GIAO LƯU VỚI<br />CÔ DÂU & CHÚ RỂ
-                </div>
-              </div>
+              {/* Vòng lặp các mốc thời gian */}
+              {data.timeline.map((item, index) => {
+                const icons = [
+                  'https://cocohappii.com/templates/005/images/icon-tl1.png',
+                  'https://cocohappii.com/templates/005/images/icon-tl2.png',
+                  'https://cocohappii.com/templates/005/images/icon-tl3.png',
+                  'https://cocohappii.com/templates/005/images/icon-tl1.png'
+                ];
+                const altText = ['camera', 'rings', 'dining', 'camera'];
+                return (
+                  <div key={index} className="relative flex flex-col items-center text-center w-1/4 z-10">
+                    <div className="h-12 flex items-center justify-center mb-1">
+                      <img src={icons[index % 4]} className="w-9 h-9 object-contain" alt={altText[index % 4]} />
+                    </div>
+                    <div className="w-3 h-3 rounded-full bg-white border border-white/60 shadow-xs z-20 my-1" />
+                    <div className="text-white font-serif-elegant font-bold text-sm tracking-wider mt-1.5">{item.time}</div>
+                    <div className="text-[8px] min-[360px]:text-[9px] min-[400px]:text-[10px] font-bold text-white leading-relaxed uppercase mt-1 tracking-wide px-0 whitespace-pre-line">
+                      {item.label}
+                    </div>
+                  </div>
+                );
+              })}
 
             </div>
           </div>
@@ -512,7 +515,7 @@ export default function Home() {
             </button>
           </div>
 
-          <GiftModal isOpen={isGiftOpen} onClose={() => setIsGiftOpen(false)} />
+          <GiftModal isOpen={isGiftOpen} onClose={() => setIsGiftOpen(false)} bankInfo={data.bankInfo} />
         </section>
 
         {/* SECTION 10: SỔ LƯU BÚT */}
@@ -524,7 +527,9 @@ export default function Home() {
             </p>
           </div>
 
-          <Guestbook />
+          <Suspense fallback={null}>
+            <Guestbook onRSVPClick={() => setIsRSVPOpen(true)} />
+          </Suspense>
 
           {/* Cảm ơn cuối trang */}
           <div className="mt-12 space-y-4 border-t border-[#928362]/10 pt-10 pb-6 text-[#928362]">
@@ -536,6 +541,48 @@ export default function Home() {
         </section>
 
       </div>
+
+      {/* Floating Action Buttons Stacked vertically above the music button */}
+      {isPopupClosed && (
+        <div className="fixed bottom-[80px] right-5 z-40 flex flex-col space-y-3 select-none">
+          {/* RSVP Button */}
+          <button
+            onClick={() => setIsRSVPOpen(true)}
+            title="Xác nhận tham dự (RSVP)"
+            className="w-12 h-12 rounded-full bg-[#5c5d8b] border border-white/20 text-white flex items-center justify-center shadow-lg hover:bg-[#4a4b75] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer relative group"
+          >
+            <CalendarRange className="w-5 h-5" />
+            <span className="absolute right-[110%] top-1/2 -translate-y-1/2 bg-black/80 text-white text-[10px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+              Xác nhận tham dự
+            </span>
+          </button>
+
+          {/* Giftbox Button (Hộp mừng cưới) */}
+          <button
+            onClick={() => setIsGiftOpen(true)}
+            title="Hộp mừng cưới"
+            className="w-12 h-12 rounded-full bg-[#b0585c] border border-white/20 text-white flex items-center justify-center shadow-lg hover:bg-[#974549] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer relative group"
+          >
+            <Gift className="w-5 h-5" />
+            <span className="absolute right-[110%] top-1/2 -translate-y-1/2 bg-black/80 text-white text-[10px] font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+              Mừng cưới
+            </span>
+            {/* Pulsing ring indicator */}
+            <span className="absolute -inset-0.5 rounded-full bg-[#b0585c]/35 animate-ping pointer-events-none"></span>
+          </button>
+        </div>
+      )}
+
+      {/* RSVP Modal */}
+      <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} />
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={null}>
+      <HomeContent />
+    </Suspense>
   );
 }

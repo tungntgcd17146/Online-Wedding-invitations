@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function GuestPopup({ onClose }) {
+export default function GuestPopup({ onClose, date }) {
   const [isOpen, setIsOpen] = useState(true);
   const [guestName, setGuestName] = useState('Gia đình bạn ❤️');
 
@@ -72,7 +72,7 @@ export default function GuestPopup({ onClose }) {
                 }}
               />
               <span className="text-[15px] font-serif-elegant font-semibold tracking-[0.15em] text-[#5b432b]">
-                07.11.2025
+                {date || '08.08.2026'}
               </span>
               <div 
                 className="w-16 h-8 bg-contain bg-center bg-no-repeat opacity-80"

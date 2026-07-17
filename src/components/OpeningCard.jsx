@@ -9,13 +9,13 @@ export default function OpeningCard({ onComplete }) {
     // Tự động kích hoạt hiệu ứng mở sau 300ms để người dùng kịp nhìn bìa
     const startTimer = setTimeout(() => {
       setIsStarted(true);
-    }, 300);
+    }, 500);
 
-    // Kích hoạt callback báo hoàn tất hiệu ứng khi slide đang trượt nửa chừng (tránh cảm giác chờ đợi)
+    // Kích hoạt callback báo hoàn tất hiệu ứng khi slide trượt xong hoàn toàn (3000ms)
     const completeTimer = setTimeout(() => {
       setIsHidden(true);
       if (onComplete) onComplete();
-    }, 1200); // 300ms delay + 900ms transition time
+    }, 3000); // 1000ms delay + 2000ms transition time
 
     return () => {
       clearTimeout(startTimer);

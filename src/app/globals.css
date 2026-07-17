@@ -187,14 +187,14 @@ body {
 
 /* Hiệu ứng mở cánh phong bì trượt ra 2 bên bằng CSS thuần cho Mobile */
 .card-side-animate-left {
-  animation: slideOutLeft 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  animation: slideOutLeft 2.0s cubic-bezier(0.25, 1, 0.3, 1) forwards !important;
   animation-delay: 1000ms !important;
   transform: translate3d(0%, 0px, 0px);
   -webkit-transform: translate3d(0%, 0px, 0px);
 }
 
 .card-side-animate-right {
-  animation: slideOutRight 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+  animation: slideOutRight 2.0s cubic-bezier(0.25, 1, 0.3, 1) forwards !important;
   animation-delay: 1000ms !important;
   transform: translate3d(0%, 0px, 0px);
   -webkit-transform: translate3d(0%, 0px, 0px);

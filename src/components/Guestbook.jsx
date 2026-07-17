@@ -1,8 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
+import { useSearchParams } from 'next/navigation';
+import { CalendarRange } from 'lucide-react';
 
-export default function Guestbook() {
+export default function Guestbook({ onRSVPClick }) {
+  const searchParams = useSearchParams();
+  const guestName = searchParams.get('to') || '';
   const [wishes, setWishes] = useState([]);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
@@ -115,6 +119,22 @@ export default function Guestbook() {
         </button>
       </form>
 
+      {/* Nút Xác Nhận Tham Dự */}
+      <button
+        onClick={onRSVPClick}
+        type="button"
+        className="w-full mt-3 py-3.5 bg-white hover:bg-zinc-50 text-[#928362] border-2 border-[#928362] text-[16px] font-extrabold rounded-xl transition duration-300 shadow-sm flex items-center justify-center space-x-2 cursor-pointer"
+      >
+        <CalendarRange className="w-5 h-5 text-[#928362]" />
+        <span>XÁC NHẬN THAM DỰ</span>
+      </button>
+
+      {guestName && (
+        <div className="text-right text-xs text-[#928362]/70 font-semibold mt-2.5 italic">
+          Khách mời: <span className="text-[#928362] font-bold">{guestName}</span>
+        </div>
+      )}
+
       {/* Danh Sách Lời Chúc (Dưới dạng các ô giấy ghi chú cuộn dọc nhỏ gọn) */}
       <div className="mt-10">
         <h4 className="text-sm font-serif-elegant font-bold text-[#928362]/90 uppercase tracking-widest text-center mb-4">
@@ -136,7 +156,7 @@ export default function Guestbook() {
                   <span className="font-bold text-[#928362] text-[13px]">{wish.name}</span>
                   <span>{wish.timestamp}</span>
                 </div>
-                <p className="text-sm text-[#928362] leading-relaxed pt-0.5 break-words font-medium text-left">{wish.message}</p>
+                <p className="text-sm text-zinc-800 leading-relaxed pt-0.5 break-words font-medium text-left">{wish.message}</p>
               </div>
             ))}
           </div>

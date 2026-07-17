@@ -81,3 +81,31 @@ export async function addWish(name, message) {
     throw error;
   }
 }
+
+// Lưu tạm RSVP trên server (memory) khi chạy ở chế độ Mock
+const mockRSVP = [];
+
+export async function addRSVP(name, attends, message) {
+  if (!isConfigured || !sheets) {
+    const timestamp = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+    const newRSVP = { timestamp, name, attends, message };
+    mockRSVP.unshift(newRSVP);
+    return newRSVP;
+  }
+  try {
+    const range = 'RSVP!A:D';
+    const timestamp = new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' });
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: {
+        values: [[timestamp, name, attends, message]],
+      },
+    });
+    return { timestamp, name, attends, message };
+  } catch (error) {
+    console.error('Lỗi khi lưu RSVP vào Google Sheets:', error);
+    throw error;
+  }
+}
