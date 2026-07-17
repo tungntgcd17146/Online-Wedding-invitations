@@ -33,9 +33,9 @@ export default function Countdown({ targetDate }) {
   const padZero = (num) => String(num).padStart(2, '0');
 
   return (
-    <div id="countdown" className="my-6">
-      <div className="countdown-inner font-serif-elegant text-[#928362] text-3xl md:text-4xl font-light tracking-widest flex items-center justify-center space-x-2 select-none">
-        <span className="w-14 text-center">{padZero(timeLeft.days)}</span>
+    <div id="countdown" className="mt-8 mb-16">
+      <div className="countdown-inner font-serif-elegant text-[#928362] text-4xl md:text-5xl font-light tracking-[0.2em] flex items-center justify-center space-x-3 select-none">
+        <span className="w-20 text-center">{padZero(timeLeft.days)}</span>
         <span className="opacity-70 -mt-1">:</span>
         <span className="w-14 text-center">{padZero(timeLeft.hours)}</span>
         <span className="opacity-70 -mt-1">:</span>

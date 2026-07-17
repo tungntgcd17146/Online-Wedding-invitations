@@ -5,14 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Gallery() {
   const images = [
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/9cb03dc3-c5a6-4b7f-a807-96c21d708094.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/94572186-c77b-4421-9a4f-fc5a26ffd1e1.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/5490b50c-742d-48d4-a586-4b5d2f854053.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/40975a4a-64a5-436e-b875-aa2c3f6d7380.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/f9bd7002-acea-484c-ab73-2ca5ac265fd6.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/65a7e4c7-d8f8-4275-91e2-1af1cac0a16a.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/9d701b10-eeb3-423f-b285-4f3caa983d01.jpg',
-    'https://media.cocohappii.com/optimized/53d8f7a6-acc3-4f83-afe2-0aba355282c2/3ad48427-5423-4ba2-93f5-46ec76095de9.jpg',
+    '/wedding_photos/BUM_8838.webp',
+    '/wedding_photos/BUM_8749.webp',
+    '/wedding_photos/BUM_8696.webp',
+    '/wedding_photos/BUM_8680.webp',
+    '/wedding_photos/BUM_8676.webp',
+    '/wedding_photos/BUM_8668.webp',
+    '/wedding_photos/BUM_8625.webp',
+    '/wedding_photos/BUM_8617.webp'
   ];
 
   const [activeIdx, setActiveIdx] = useState(null);

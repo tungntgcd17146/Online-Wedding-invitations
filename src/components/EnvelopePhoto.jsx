@@ -11,27 +11,27 @@ export default function EnvelopePhoto() {
         className="back"
       />
       
-      {/* Bức ảnh 1: Trượt lên và nghiêng trái (Chú rể nhìn cô dâu) */}
+      {/* Bức ảnh 1: Trượt lên và nghiêng phải (Bức ảnh bên phải) */}
       <motion.div
-        initial={{ y: 110, rotate: -3, opacity: 0 }}
-        whileInView={{ y: -30, rotate: -8, opacity: 1 }}
+        initial={{ y: '55%', rotate: 10, opacity: 0 }}
+        whileInView={{ y: 0, rotate: 10, opacity: 1 }}
         viewport={{ once: true, margin: "-20px" }}
         transition={{ type: 'spring', stiffness: 55, damping: 14, delay: 0.2 }}
         className="pt1"
         style={{
-          backgroundImage: 'url(https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/d44e2427-4695-44ba-a4d8-600cdbaa1bc2.jpg)',
+          backgroundImage: 'url(/wedding_photos/BUM_8162.webp)',
         }}
       />
 
-      {/* Bức ảnh 2: Trượt lên và nghiêng phải (Cô dâu cười, chú rể bên phải) */}
+      {/* Bức ảnh 2: Trượt lên và nghiêng trái (Bức ảnh bên trái) */}
       <motion.div
-        initial={{ y: 110, rotate: 3, opacity: 0 }}
-        whileInView={{ y: -38, rotate: 6, opacity: 1 }}
+        initial={{ y: '55%', rotate: -2, opacity: 0 }}
+        whileInView={{ y: 0, rotate: -2, opacity: 1 }}
         viewport={{ once: true, margin: "-20px" }}
         transition={{ type: 'spring', stiffness: 55, damping: 14, delay: 0.4 }}
         className="pt2"
         style={{
-          backgroundImage: 'url(https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/dea27d6c-12f4-4bf1-ae2e-2310817cafd1.jpg)',
+          backgroundImage: 'url(/wedding_photos/BUM_8205.webp)',
         }}
       />
 

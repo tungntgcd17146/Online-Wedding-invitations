@@ -78,8 +78,8 @@ body {
 
 #card-countdown {
   background-image: url(https://cocohappii.com/templates/005/images/bg-1.jpg);
-  background-size: 100% auto;
-  background-position: bottom center;
+  background-size: cover;
+  background-position: top center;
   background-repeat: no-repeat;
   background-color: #fff8ed;
 }
@@ -89,7 +89,7 @@ body {
 }
 
 #card-love-story {
-  background-image: url(https://cocohappii.com/templates/005/images/bg-3.jpg);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.68)), url(/wedding_photos/BUM_8345.webp);
 }
 
 #card-gallery {
@@ -140,9 +140,9 @@ body {
 #envelop-photo {
   position: relative;
   width: 90%;
-  max-width: 340px;
-  aspect-ratio: 340 / 230;
-  margin: 0 auto;
+  max-width: 380px;
+  aspect-ratio: 760 / 1013;
+  margin: 30px auto 0;
 }
 
 #envelop-photo img.back {
@@ -163,24 +163,26 @@ body {
 
 #envelop-photo .pt1, #envelop-photo .pt2 {
   position: absolute;
-  width: 36%;
-  aspect-ratio: 3/4;
-  border: 3px solid white;
+  aspect-ratio: 1 / 1;
+  border: 5px solid white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   background-size: cover;
   background-position: center;
-  bottom: 8%;
   border-radius: 2px;
 }
 
 #envelop-photo .pt1 {
-  left: 14%;
-  z-index: 2;
+  width: 55%;
+  right: 5%;
+  bottom: 36%;
+  z-index: 1;
 }
 
 #envelop-photo .pt2 {
-  right: 14%;
-  z-index: 3;
+  width: 46%;
+  left: 8%;
+  bottom: 25%;
+  z-index: 2;
 }
 
 /* Hiệu ứng mở cánh phong bì trượt ra 2 bên bằng CSS thuần cho Mobile */
@@ -218,5 +220,32 @@ body {
     transform: translate3d(100%, 0px, 0px);
     -webkit-transform: translate3d(100%, 0px, 0px);
   }
+}
+
+@keyframes bounceSoft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.bounce-soft {
+  display: inline-flex !important;
+  animation: bounceSoft 1.4s ease-in-out infinite;
+}
+
+@keyframes giftPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.gift-pulse {
+  animation: giftPulse 2s ease-in-out infinite;
 }
 

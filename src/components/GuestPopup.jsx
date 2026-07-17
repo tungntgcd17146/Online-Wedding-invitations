@@ -60,7 +60,7 @@ export default function GuestPopup({ onClose }) {
               The Wedding Of
             </span>
             <h2 className="text-2xl font-serif-elegant font-bold text-[#5b432b] tracking-wide">
-              Minh Phương ♥ Đức Trung
+              Thanh Tùng ♥ Ánh Nguyệt
             </h2>
 
             {/* Ngày cưới cùng 2 chiếc lá nghệ thuật */}

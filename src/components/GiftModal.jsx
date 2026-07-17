@@ -1,23 +1,50 @@
 'use client';
 import { X, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-export default function GiftModal({ isOpen, onClose }) {
-  const [copiedGroom, setCopiedGroom] = useState(false);
-  const [copiedBride, setCopiedBride] = useState(false);
-  const [activeTab, setActiveTab] = useState('groom'); // 'groom' hoặc 'bride'
+function GiftModalContent({ isOpen, onClose }) {
+  const [copied, setCopied] = useState(false);
+  const searchParams = useSearchParams();
 
   if (!isOpen) return null;
 
-  const copyToClipboard = (text, type) => {
+  // Quyết định hiển thị Chú rể hay Cô dâu dựa trên các tham số query thông dụng
+  const sideParam = (
+    searchParams.get('side') || 
+    searchParams.get('from') || 
+    searchParams.get('role') || 
+    ''
+  ).toLowerCase();
+
+  const isBride = 
+    sideParam.includes('nu') || 
+    sideParam.includes('bride') || 
+    sideParam.includes('codau') || 
+    sideParam.includes('gai');
+
+  const activeSide = isBride ? 'bride' : 'groom';
+
+  const accountInfo = activeSide === 'groom' ? {
+    roleName: 'chú rể',
+    fullName: 'Thanh Tùng',
+    bankName: 'TPBank',
+    accountNumber: '02138194101',
+    ownerName: 'NGUYỄN THANH TÙNG',
+    qrSrc: '/wedding_photos/QRchure_cropped.webp'
+  } : {
+    roleName: 'cô dâu',
+    fullName: 'Ánh Nguyệt',
+    bankName: 'TPBank',
+    accountNumber: '10000516918',
+    ownerName: 'PHẠM THỊ ÁNH NGUYỆT',
+    qrSrc: '/wedding_photos/QRcodau_cropped.webp'
+  };
+
+  const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
-    if (type === 'groom') {
-      setCopiedGroom(true);
-      setTimeout(() => setCopiedGroom(false), 2000);
-    } else {
-      setCopiedBride(true);
-      setTimeout(() => setCopiedBride(false), 2000);
-    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -25,87 +52,53 @@ export default function GiftModal({ isOpen, onClose }) {
       <div className="bg-[#fff8ed] w-full max-w-[380px] rounded-2xl shadow-2xl border border-[#928362]/20 overflow-hidden relative">
         {/* Tiêu đề Modal */}
         <div className="flex items-center justify-between p-4 border-b border-[#928362]/10 bg-white">
-          <h3 className="text-md font-serif-elegant font-bold text-[#928362] tracking-wider uppercase">Quà Mừng Cưới</h3>
+          <h3 className="text-md font-serif-elegant font-bold text-[#928362] tracking-wider uppercase">
+            Quà Mừng Cưới
+          </h3>
           <button onClick={onClose} className="text-zinc-400 hover:text-[#928362] transition-colors p-1">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Nút Tab chuyển tài khoản Chú Rể / Cô Dâu */}
-        <div className="flex border-b border-[#928362]/10 bg-white/50 text-sm">
-          <button
-            onClick={() => setActiveTab('groom')}
-            className={`flex-1 py-3 text-center font-bold transition-all duration-300 ${
-              activeTab === 'groom' 
-                ? 'text-[#928362] bg-[#fff8ed] border-b-2 border-[#928362]' 
-                : 'text-zinc-500 hover:text-[#928362]/80'
-            }`}
-          >
-            Đến Chú Rể
-          </button>
-          <button
-            onClick={() => setActiveTab('bride')}
-            className={`flex-1 py-3 text-center font-bold transition-all duration-300 ${
-              activeTab === 'bride' 
-                ? 'text-[#928362] bg-[#fff8ed] border-b-2 border-[#928362]' 
-                : 'text-zinc-500 hover:text-[#928362]/80'
-            }`}
-          >
-            Đến Cô Dâu
-          </button>
-        </div>
-
-        {/* Nội dung bên trong Tab */}
+        {/* Nội dung hiển thị tài khoản */}
         <div className="p-6 text-center">
-          {activeTab === 'groom' ? (
-            <div className="space-y-4">
-              <p className="text-xs font-semibold text-zinc-500">Mừng cưới chú rể Đức Trung</p>
-              <div className="w-[180px] h-[180px] mx-auto bg-white p-2 rounded-xl border border-[#928362]/20 shadow-inner flex items-center justify-center">
-                <img 
-                  src="https://media.cocohappii.com/qr_codes/53d8f7a6-acc3-4f83-afe2-0aba355282c2.jpg" 
-                  alt="QR Code Groom"
-                  className="max-h-full max-w-full rounded-sm"
-                />
-              </div>
-              <div className="bg-white/80 p-3 rounded-xl border border-[#928362]/10 text-xs space-y-1 font-semibold text-zinc-700">
-                <div>Ngân hàng: <span className="text-zinc-950 font-bold">Vietcombank</span></div>
-                <div>Số tài khoản: <span className="text-zinc-950 font-bold">101889988</span></div>
-                <div>Chủ tài khoản: <span className="text-zinc-950 font-bold">TRẦN ĐỨC TRUNG</span></div>
+          <div className="space-y-4">
+            <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">
+              Mừng cưới {accountInfo.roleName} {accountInfo.fullName}
+            </p>
+            <div className="w-[180px] h-[180px] mx-auto bg-white p-2 rounded-xl border border-[#928362]/20 shadow-inner flex items-center justify-center">
+              <img 
+                src={accountInfo.qrSrc} 
+                alt={`QR Code ${accountInfo.fullName}`}
+                className="max-h-full max-w-full rounded-sm"
+              />
+            </div>
+            <div className="bg-white/80 p-4 rounded-xl border border-[#928362]/10 text-sm space-y-1.5 font-semibold text-zinc-700 text-left max-w-[260px] mx-auto">
+              <div>Ngân hàng: <span className="text-zinc-950 font-bold">{accountInfo.bankName}</span></div>
+              <div>Số tài khoản: <span className="text-zinc-950 font-bold">{accountInfo.accountNumber}</span></div>
+              <div>Chủ tài khoản: <span className="text-zinc-950 font-bold">{accountInfo.ownerName}</span></div>
+              <div className="pt-2 text-center">
                 <button
-                  onClick={() => copyToClipboard('101889988', 'groom')}
-                  className="mt-2 inline-flex items-center space-x-1 py-1 px-3 rounded bg-[#928362] text-white hover:bg-[#7a6d51] transition-colors font-bold text-xs"
+                  onClick={() => copyToClipboard(accountInfo.accountNumber)}
+                  className="inline-flex items-center justify-center space-x-1.5 py-1.5 px-4 rounded bg-[#928362] text-white hover:bg-[#7a6d51] transition-colors font-bold text-xs shadow-xs"
                 >
-                  {copiedGroom ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedGroom ? 'Đã sao chép' : 'Sao chép STK'}</span>
+                  {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copied ? 'Đã sao chép' : 'Sao chép STK'}</span>
                 </button>
               </div>
             </div>
-          ) : (
-            <div className="space-y-4">
-              <p className="text-xs font-semibold text-zinc-500">Mừng cưới cô dâu Minh Phương</p>
-              <div className="w-[180px] h-[180px] mx-auto bg-white p-2 rounded-xl border border-[#928362]/20 shadow-inner flex items-center justify-center">
-                <img 
-                  src="https://media.cocohappii.com/qr_codes/53d8f7a6-acc3-4f83-afe2-0aba355282c2.jpg" 
-                  alt="QR Code Bride"
-                  className="max-h-full max-w-full rounded-sm"
-                />
-              </div>
-              <div className="bg-white/80 p-3 rounded-xl border border-[#928362]/10 text-xs space-y-1 font-semibold text-zinc-700">
-                <div>Ngân hàng: <span className="text-zinc-950 font-bold">Techcombank</span></div>
-                <div>Số tài khoản: <span className="text-zinc-950 font-bold">19033445566</span></div>
-                <div>Chủ tài khoản: <span className="text-zinc-950 font-bold">LÊ THỊ MINH PHƯƠNG</span></div>
-                <button
-                  onClick={() => copyToClipboard('19033445566', 'bride')}
-                  className="mt-2 inline-flex items-center space-x-1 py-1 px-3 rounded bg-[#928362] text-white hover:bg-[#7a6d51] transition-colors font-bold text-xs"
-                >
-                  {copiedBride ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedBride ? 'Đã sao chép' : 'Sao chép STK'}</span>
-                </button>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function GiftModal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+  return (
+    <Suspense fallback={null}>
+      <GiftModalContent isOpen={isOpen} onClose={onClose} />
+    </Suspense>
   );
 }

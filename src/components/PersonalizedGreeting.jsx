@@ -14,24 +14,13 @@ export default function PersonalizedGreeting() {
     }
   }, []);
 
-  if (!guestName) {
-    return (
-      <p className="text-xs text-zinc-500 italic max-w-[280px] mx-auto leading-relaxed">
-        Trân trọng kính mời quý khách và gia đình đến chung vui cùng buổi tiệc cưới ấm áp của chúng tôi!
-      </p>
-    );
-  }
-
   return (
-    <div className="bg-[#fff8ed]/90 border border-[#928362]/30 p-4 rounded-xl shadow-xs text-center max-w-[320px] mx-auto animate-float">
-      <span className="text-[9px] uppercase font-bold text-[#928362] tracking-widest block mb-1">
-        Thư Mời Trân Trọng
-      </span>
-      <h4 className="text-sm font-serif-elegant font-bold text-[#928362] mb-1">
-        Thân gửi đến: <span className="underline decoration-wavy decoration-[#gold-accent] underline-offset-4 font-extrabold">{guestName}</span>
-      </h4>
-      <p className="text-[11px] text-zinc-500">
-        Sự hiện diện của quý khách là niềm vinh hạnh lớn cho gia đình chúng tôi!
+    <div className="text-center space-y-3.5 max-w-[340px] mx-auto select-none text-[#796745]">
+      <p className="text-[18px] font-semibold leading-relaxed">
+        Thân gửi đến: <span className="font-bold border-b border-[#928362]/40 pb-0.5 px-2 text-[19px]">{guestName || 'Quý khách'}</span>
+      </p>
+      <p className="text-[17.5px] italic font-semibold leading-relaxed opacity-90">
+        Trân trọng kính mời quý khách và gia đình đến chung vui cùng buổi tiệc cưới ấm áp của chúng tôi!
       </p>
     </div>
   );

@@ -2,11 +2,9 @@
 
 export default function FilmFrame() {
   const photos = [
-    'https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/dea27d6c-12f4-4bf1-ae2e-2310817cafd1.jpg',
-    'https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/f13be366-7a51-4405-9f96-1d7e7519ab2e.jpg',
-    'https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/45d29b3f-79c1-4842-864c-207e4c93d613.jpg',
-    'https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/473df5d5-1841-4cfb-87be-7e05e675a35d.jpg',
-    'https://media.cocohappii.com/thumbnails/53d8f7a6-acc3-4f83-afe2-0aba355282c2/d44e2427-4695-44ba-a4d8-600cdbaa1bc2.jpg',
+    '/wedding_photos/BUM_8345.webp',
+    '/wedding_photos/BUM_8496.webp',
+    '/wedding_photos/BUM_8838.webp',
   ];
 
   return (

@@ -81,7 +81,7 @@ export default function Guestbook() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isSubmitting}
-            className="w-full px-4 py-3 rounded-xl border border-[#928362]/30 bg-white/70 text-sm focus:outline-none focus:ring-1 focus:ring-[#928362] transition text-zinc-800 placeholder-zinc-400"
+            className="w-full px-4 py-3.5 rounded-xl border border-[#928362]/30 bg-white/70 text-[16px] focus:outline-none focus:ring-1 focus:ring-[#928362] transition text-zinc-800 placeholder-zinc-400 font-medium"
             required
           />
         </div>
@@ -92,16 +92,16 @@ export default function Guestbook() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={isSubmitting}
-            className="w-full px-4 py-3 rounded-xl border border-[#928362]/30 bg-white/70 text-sm focus:outline-none focus:ring-1 focus:ring-[#928362] transition text-zinc-800 placeholder-zinc-400 resize-none"
+            className="w-full px-4 py-3.5 rounded-xl border border-[#928362]/30 bg-white/70 text-[16px] focus:outline-none focus:ring-1 focus:ring-[#928362] transition text-zinc-800 placeholder-zinc-400 resize-none font-medium"
             required
           ></textarea>
         </div>
 
         {error && (
-          <p className="text-red-500 text-xs text-center font-semibold">{error}</p>
+          <p className="text-red-500 text-sm text-center font-bold">{error}</p>
         )}
         {success && (
-          <p className="text-emerald-600 text-xs text-center font-bold">
+          <p className="text-emerald-600 text-sm text-center font-extrabold">
             Lời chúc của bạn đã gửi thành công! Cảm ơn bạn rất nhiều!
           </p>
         )}
@@ -109,34 +109,34 @@ export default function Guestbook() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3 bg-[#928362] hover:bg-[#7a6d51] text-white text-sm font-bold rounded-xl transition duration-300 shadow-md cursor-pointer disabled:opacity-50"
+          className="w-full py-3.5 bg-[#928362] hover:bg-[#7a6d51] text-white text-[16px] font-bold rounded-xl transition duration-300 shadow-md cursor-pointer disabled:opacity-50"
         >
           {isSubmitting ? 'Đang gửi...' : 'Gửi Lời Chúc'}
         </button>
       </form>
 
       {/* Danh Sách Lời Chúc (Dưới dạng các ô giấy ghi chú cuộn dọc nhỏ gọn) */}
-      <div className="mt-8">
-        <h4 className="text-xs font-serif-elegant font-bold text-[#928362]/80 uppercase tracking-widest text-center mb-4">
+      <div className="mt-10">
+        <h4 className="text-sm font-serif-elegant font-bold text-[#928362]/90 uppercase tracking-widest text-center mb-4">
           — Lời Chúc Từ Mọi Người —
         </h4>
 
         {wishes.length === 0 ? (
-          <p className="text-xs text-zinc-400 text-center italic py-4">
+          <p className="text-sm text-zinc-400 text-center italic py-4">
             Chưa có lời chúc nào. Hãy là người đầu tiên chúc phúc!
           </p>
         ) : (
-          <div className="space-y-3 max-h-[280px] overflow-y-auto pr-1 no-scrollbar border-t border-b border-[#928362]/10 py-3 bg-white/20 rounded-lg">
+          <div className="space-y-3.5 max-h-[300px] overflow-y-auto pr-1 no-scrollbar border-t border-b border-[#928362]/10 py-3 bg-white/20 rounded-lg">
             {wishes.map((wish, index) => (
               <div 
                 key={index} 
-                className="bg-white/80 p-3 rounded-xl border border-[#928362]/10 shadow-xs flex flex-col space-y-1 transition duration-300 hover:shadow-sm"
+                className="bg-white/80 p-3.5 rounded-xl border border-[#928362]/10 shadow-xs flex flex-col space-y-1.5 transition duration-300 hover:shadow-sm"
               >
-                <div className="flex justify-between items-center text-[10px] text-zinc-400 border-b border-zinc-100 pb-1">
-                  <span className="font-bold text-[#928362]/90">{wish.name}</span>
+                <div className="flex justify-between items-center text-xs text-[#928362]/60 border-b border-[#928362]/10 pb-1.5">
+                  <span className="font-bold text-[#928362] text-[13px]">{wish.name}</span>
                   <span>{wish.timestamp}</span>
                 </div>
-                <p className="text-xs text-zinc-700 leading-relaxed pt-1 break-words">{wish.message}</p>
+                <p className="text-sm text-[#928362] leading-relaxed pt-0.5 break-words font-medium text-left">{wish.message}</p>
               </div>
             ))}
           </div>
