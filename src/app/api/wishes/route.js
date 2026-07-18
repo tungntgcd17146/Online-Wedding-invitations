@@ -17,7 +17,7 @@ export async function GET() {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, message } = body;
+    const { name, message, row } = body;
 
     if (!name || !name.trim()) {
       return NextResponse.json(
@@ -33,7 +33,7 @@ export async function POST(request) {
       );
     }
 
-    const newWish = await addWish(name.trim(), message.trim());
+    const newWish = await addWish(name.trim(), message.trim(), row);
     return NextResponse.json({ success: true, data: newWish });
   } catch (error) {
     console.error('API POST /api/wishes error:', error);

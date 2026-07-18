@@ -4,11 +4,9 @@ import confetti from 'canvas-confetti';
 import { useSearchParams } from 'next/navigation';
 import { CalendarRange } from 'lucide-react';
 
-export default function Guestbook({ onRSVPClick }) {
-  const searchParams = useSearchParams();
-  const guestName = searchParams.get('to') || '';
+export default function Guestbook({ onRSVPClick, guestName, guestRow }) {
   const [wishes, setWishes] = useState([]);
-  const [name, setName] = useState('');
+  const [name, setName] = useState(guestName || '');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -17,6 +15,12 @@ export default function Guestbook({ onRSVPClick }) {
   useEffect(() => {
     fetchWishes();
   }, []);
+
+  useEffect(() => {
+    if (guestName) {
+      setName(guestName);
+    }
+  }, [guestName]);
 
   const fetchWishes = async () => {
     try {
@@ -43,16 +47,23 @@ export default function Guestbook({ onRSVPClick }) {
       const res = await fetch('/api/wishes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, message })
+        body: JSON.stringify({ name, message, row: guestRow })
       });
       const result = await res.json();
       if (result.success) {
         setSuccess(true);
-        setName('');
+        if (!guestRow) {
+          setName('');
+        }
         setMessage('');
         
         // Thêm lời chúc mới vào đầu danh sách hiển thị
-        setWishes((prev) => [result.data, ...prev]);
+        const newWishObj = {
+          name,
+          message,
+          timestamp: new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN')
+        };
+        setWishes((prev) => [newWishObj, ...prev]);
 
         // Hiệu ứng pháo hoa giấy chúc mừng!
         confetti({

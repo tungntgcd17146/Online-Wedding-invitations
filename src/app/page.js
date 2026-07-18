@@ -1,5 +1,5 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import GuestPopup from '@/components/GuestPopup';
 import OpeningCard from '@/components/OpeningCard';
 import AudioPlayer from '@/components/AudioPlayer';
@@ -24,6 +24,35 @@ export function HomeContent({ forceSide }) {
   const [musicPlayTrigger, setMusicPlayTrigger] = useState(false);
   const [isGiftOpen, setIsGiftOpen] = useState(false);
   const [isRSVPOpen, setIsRSVPOpen] = useState(false);
+  const [guestName, setGuestName] = useState('Gia đình bạn ❤️');
+  const [guestRow, setGuestRow] = useState(null);
+  const [isLoadingGuest, setIsLoadingGuest] = useState(false);
+
+  useEffect(() => {
+    const rowVal = searchParams.get('row') || searchParams.get('id');
+    if (rowVal) {
+      setIsLoadingGuest(true);
+      setGuestRow(rowVal);
+      fetch(`/api/guest?row=${rowVal}&t=${Date.now()}`)
+        .then(res => res.json())
+        .then(res => {
+          if (res.success && res.data) {
+            if (res.data.name) {
+              setGuestName(res.data.name);
+            }
+          }
+        })
+        .catch(err => console.error('Lỗi khi tải thông tin khách mời:', err))
+        .finally(() => {
+          setIsLoadingGuest(false);
+        });
+    } else {
+      const toVal = searchParams.get('to');
+      if (toVal) {
+        setGuestName(toVal);
+      }
+    }
+  }, [searchParams]);
 
   // Xác định hiển thị thông tin Nhà Trai hay Nhà Gái
   const sideParam = (
@@ -55,10 +84,10 @@ export function HomeContent({ forceSide }) {
       {/* Bước 1: Hiệu ứng mở cánh phong bì tự động lúc mới tải trang */}
       <OpeningCard onComplete={() => setIsEnvelopeOpened(true)} isReady={true} />
 
-      {/* Bước 2: Popup thư mời cá nhân hóa chỉ hiện sau khi phong bì mở ra */}
-      {isEnvelopeOpened && !isPopupClosed && (
+      {/* Bước 2: Popup thư mời cá nhân hóa chỉ hiện sau khi phong bì mở ra và dữ liệu đã tải xong */}
+      {isEnvelopeOpened && !isPopupClosed && !isLoadingGuest && (
         <Suspense fallback={null}>
-          <GuestPopup onClose={handlePopupClose} date={data.bannerDate} />
+          <GuestPopup onClose={handlePopupClose} date={data.bannerDate} guestName={guestName} />
         </Suspense>
       )}
 
@@ -225,7 +254,7 @@ export function HomeContent({ forceSide }) {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <Suspense fallback={<div className="text-xs text-zinc-400">Đang tải lời mời...</div>}>
-                <PersonalizedGreeting />
+                <PersonalizedGreeting guestName={guestName} />
               </Suspense>
             </motion.div>
           </div>
@@ -419,7 +448,7 @@ export function HomeContent({ forceSide }) {
             <div className="bg-white p-1.5 pb-4 shadow-xs border border-zinc-200/40 rounded-xs">
               <div className="aspect-[3/4] overflow-hidden bg-zinc-100">
                 <img 
-                  src="/wedding_photos/BUM_8369.webp" 
+                  src="/wedding_photos/BUM_8550.webp" 
                   alt="Calendar Side 2" 
                   className="w-full h-full object-cover"
                 />
@@ -528,7 +557,7 @@ export function HomeContent({ forceSide }) {
           </div>
 
           <Suspense fallback={null}>
-            <Guestbook onRSVPClick={() => setIsRSVPOpen(true)} />
+            <Guestbook onRSVPClick={() => setIsRSVPOpen(true)} guestName={guestName} guestRow={guestRow} />
           </Suspense>
 
           {/* Cảm ơn cuối trang */}
@@ -574,7 +603,7 @@ export function HomeContent({ forceSide }) {
       )}
 
       {/* RSVP Modal */}
-      <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} />
+      <RSVPModal isOpen={isRSVPOpen} onClose={() => setIsRSVPOpen(false)} guestName={guestName} guestRow={guestRow} />
     </main>
   );
 }

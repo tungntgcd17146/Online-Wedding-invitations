@@ -9,17 +9,22 @@ export default function OpeningCard({ onComplete }) {
     // Tự động kích hoạt hiệu ứng mở sau 300ms để người dùng kịp nhìn bìa
     const startTimer = setTimeout(() => {
       setIsStarted(true);
-    }, 500);
+    }, 300);
 
-    // Kích hoạt callback báo hoàn tất hiệu ứng khi slide trượt xong hoàn toàn (3000ms)
-    const completeTimer = setTimeout(() => {
-      setIsHidden(true);
+    // Kích hoạt hiển thị popup khách mời sớm (1200ms) khi cánh thiệp đang trượt mở
+    const triggerPopupTimer = setTimeout(() => {
       if (onComplete) onComplete();
-    }, 3000); // 1000ms delay + 2000ms transition time
+    }, 1200);
+
+    // Ẩn hẳn bìa thư sau khi trượt xong (3000ms) để tránh bị mất đột ngột
+    const hideCoverTimer = setTimeout(() => {
+      setIsHidden(true);
+    }, 3000);
 
     return () => {
       clearTimeout(startTimer);
-      clearTimeout(completeTimer);
+      clearTimeout(triggerPopupTimer);
+      clearTimeout(hideCoverTimer);
     };
   }, [onComplete]);
 

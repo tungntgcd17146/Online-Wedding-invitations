@@ -2,19 +2,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function GuestPopup({ onClose, date }) {
+export default function GuestPopup({ onClose, date, guestName }) {
   const [isOpen, setIsOpen] = useState(true);
-  const [guestName, setGuestName] = useState('Gia đình bạn ❤️');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const toVal = params.get('to');
-      if (toVal) {
-        setGuestName(toVal);
-      }
-    }
-  }, []);
 
   const handleOpenClick = () => {
     setIsOpen(false);
@@ -89,7 +78,7 @@ export default function GuestPopup({ onClose, date }) {
               </span>
               <div className="inline-block px-6 pb-2 border-b border-[#928362]/20">
                 <span className="text-lg font-serif-elegant font-semibold text-[#928362]">
-                  {guestName}
+                  {guestName || 'Gia đình bạn ❤️'}
                 </span>
               </div>
             </div>

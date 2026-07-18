@@ -3,26 +3,25 @@ import { X, CalendarRange, Check, Loader2 } from 'lucide-react';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-function RSVPModalContent({ isOpen, onClose }) {
+function RSVPModalContent({ isOpen, onClose, guestName, guestRow }) {
   const searchParams = useSearchParams();
-  const [name, setName] = useState('');
+  const [name, setName] = useState(guestName || '');
   const [attends, setAttends] = useState(true); // true = Có, false = Không
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  // Lấy tên khách từ query parameter "to"
+  // Lấy tên khách
   useEffect(() => {
     if (isOpen) {
-      const toParam = searchParams.get('to') || '';
-      setName(toParam);
+      setName(guestName || searchParams.get('to') || '');
       setSuccess(false);
       setError('');
       setMessage('');
       setAttends(true);
     }
-  }, [isOpen, searchParams]);
+  }, [isOpen, guestName, searchParams]);
 
   if (!isOpen) return null;
 
@@ -41,6 +40,7 @@ function RSVPModalContent({ isOpen, onClose }) {
           name: name.trim(),
           attends,
           message: message.trim(),
+          row: guestRow
         }),
       });
 
@@ -184,11 +184,11 @@ function RSVPModalContent({ isOpen, onClose }) {
   );
 }
 
-export default function RSVPModal({ isOpen, onClose }) {
+export default function RSVPModal({ isOpen, onClose, guestName, guestRow }) {
   if (!isOpen) return null;
   return (
     <Suspense fallback={null}>
-      <RSVPModalContent isOpen={isOpen} onClose={onClose} />
+      <RSVPModalContent isOpen={isOpen} onClose={onClose} guestName={guestName} guestRow={guestRow} />
     </Suspense>
   );
 }

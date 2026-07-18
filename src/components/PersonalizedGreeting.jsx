@@ -1,18 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 
-export default function PersonalizedGreeting() {
-  const [guestName, setGuestName] = useState('');
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const toVal = params.get('to');
-      if (toVal) {
-        setGuestName(toVal);
-      }
-    }
-  }, []);
+export default function PersonalizedGreeting({ guestName }) {
 
   return (
     <div className="text-center space-y-3.5 max-w-[340px] mx-auto select-none text-[#796745]">

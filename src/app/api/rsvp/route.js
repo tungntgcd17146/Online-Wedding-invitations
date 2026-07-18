@@ -4,7 +4,7 @@ import { addRSVP } from '@/lib/googleSheets';
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { name, attends, message } = body;
+    const { name, attends, message, row } = body;
 
     if (!name || !name.trim()) {
       return NextResponse.json(
@@ -22,8 +22,9 @@ export async function POST(request) {
 
     const rsvpResult = await addRSVP(
       name.trim(),
-      attends ? 'Có tham dự' : 'Không tham dự',
-      (message || '').trim()
+      attends,
+      (message || '').trim(),
+      row
     );
 
     return NextResponse.json({ success: true, data: rsvpResult });
