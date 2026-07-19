@@ -77,7 +77,7 @@ export default function GuestPopup({ onClose, date, guestName }) {
                 Gửi lời mời tới
               </span>
               <div className="inline-block px-6 pb-2 border-b border-[#928362]/20">
-                <span className="text-lg font-serif-elegant font-semibold text-[#928362]">
+                <span className="text-xl font-serif-elegant font-extrabold text-[#3a2818] tracking-wide">
                   {guestName || 'Gia đình bạn ❤️'}
                 </span>
               </div>

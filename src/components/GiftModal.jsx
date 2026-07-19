@@ -1,63 +1,32 @@
 'use client';
 import { X, Copy, Check } from 'lucide-react';
 import { useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 
-function GiftModalContent({ isOpen, onClose, bankInfo }) {
+const groomInfo = {
+  roleName: 'chú rể',
+  fullName: 'Thanh Tùng',
+  bankName: 'TPBank',
+  accountNumber: '02138194101',
+  ownerName: 'NGUYỄN THANH TÙNG',
+  qrSrc: '/wedding_photos/QRchure_cropped.webp'
+};
+
+const brideInfo = {
+  roleName: 'cô dâu',
+  fullName: 'Ánh Nguyệt',
+  bankName: 'TPBank',
+  accountNumber: '10000516918',
+  ownerName: 'PHẠM THỊ ÁNH NGUYỆT',
+  qrSrc: '/wedding_photos/QRcodau_cropped.webp'
+};
+
+function GiftModalContent({ isOpen, onClose, activeSide }) {
   const [copied, setCopied] = useState(false);
-  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState('groom'); // 'groom' hoặc 'bride'
 
   if (!isOpen) return null;
 
-  // Quyết định hiển thị Chú rể hay Cô dâu dựa trên các tham số query thông dụng (nếu có)
-  const sideParam = (
-    searchParams.get('side') || 
-    searchParams.get('from') || 
-    searchParams.get('role') || 
-    ''
-  ).toLowerCase();
-
-  let accountInfo = bankInfo;
-
-  if (sideParam) {
-    const isBride = 
-      sideParam.includes('nu') || 
-      sideParam.includes('bride') || 
-      sideParam.includes('codau') || 
-      sideParam.includes('gai');
-
-    const fallbackGroom = {
-      roleName: 'chú rể',
-      fullName: 'Thanh Tùng',
-      bankName: 'TPBank',
-      accountNumber: '02138194101',
-      ownerName: 'NGUYỄN THANH TÙNG',
-      qrSrc: '/wedding_photos/QRchure_cropped.webp'
-    };
-
-    const fallbackBride = {
-      roleName: 'cô dâu',
-      fullName: 'Ánh Nguyệt',
-      bankName: 'TPBank',
-      accountNumber: '10000516918',
-      ownerName: 'PHẠM THỊ ÁNH NGUYỆT',
-      qrSrc: '/wedding_photos/QRcodau_cropped.webp'
-    };
-
-    accountInfo = isBride ? fallbackBride : fallbackGroom;
-  }
-
-  // Fallback mặc định nếu không truyền prop và không có query params
-  if (!accountInfo) {
-    accountInfo = {
-      roleName: 'chú rể',
-      fullName: 'Thanh Tùng',
-      bankName: 'TPBank',
-      accountNumber: '02138194101',
-      ownerName: 'NGUYỄN THANH TÙNG',
-      qrSrc: '/wedding_photos/QRchure_cropped.webp'
-    };
-  }
+  const accountInfo = activeSide === 'nhanu' ? brideInfo : (activeTab === 'groom' ? groomInfo : brideInfo);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -77,6 +46,38 @@ function GiftModalContent({ isOpen, onClose, bankInfo }) {
             <X className="w-5 h-5" />
           </button>
         </div>
+
+        {/* Bộ chọn Tab (chỉ hiển thị ở nhanam) */}
+        {activeSide !== 'nhanu' && (
+          <div className="flex border-b border-[#928362]/10 bg-white/50 p-1.5 space-x-1">
+            <button
+              onClick={() => {
+                setActiveTab('groom');
+                setCopied(false);
+              }}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-200 uppercase tracking-wider ${
+                activeTab === 'groom'
+                  ? 'bg-[#928362] text-white shadow-xs'
+                  : 'text-[#928362]/70 hover:bg-[#928362]/5 hover:text-[#928362]'
+              }`}
+            >
+              Chú rể Thanh Tùng
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab('bride');
+                setCopied(false);
+              }}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-200 uppercase tracking-wider ${
+                activeTab === 'bride'
+                  ? 'bg-[#928362] text-white shadow-xs'
+                  : 'text-[#928362]/70 hover:bg-[#928362]/5 hover:text-[#928362]'
+              }`}
+            >
+              Cô dâu Ánh Nguyệt
+            </button>
+          </div>
+        )}
 
         {/* Nội dung hiển thị tài khoản */}
         <div className="p-6 text-center">
@@ -112,11 +113,11 @@ function GiftModalContent({ isOpen, onClose, bankInfo }) {
   );
 }
 
-export default function GiftModal({ isOpen, onClose, bankInfo }) {
+export default function GiftModal({ isOpen, onClose, activeSide }) {
   if (!isOpen) return null;
   return (
     <Suspense fallback={null}>
-      <GiftModalContent isOpen={isOpen} onClose={onClose} bankInfo={bankInfo} />
+      <GiftModalContent isOpen={isOpen} onClose={onClose} activeSide={activeSide} />
     </Suspense>
   );
 }

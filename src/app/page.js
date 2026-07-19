@@ -544,7 +544,7 @@ export function HomeContent({ forceSide }) {
             </button>
           </div>
 
-          <GiftModal isOpen={isGiftOpen} onClose={() => setIsGiftOpen(false)} bankInfo={data.bankInfo} />
+          <GiftModal isOpen={isGiftOpen} onClose={() => setIsGiftOpen(false)} activeSide={activeSide} />
         </section>
 
         {/* SECTION 10: SỔ LƯU BÚT */}
